@@ -3,10 +3,7 @@ package de.photomodelling.photomodelling.controller;
 import de.photomodelling.photomodelling.model.Project;
 import de.photomodelling.photomodelling.service.ProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -17,16 +14,33 @@ public class ProjectController {
     @Autowired
     private ProjectService projectService;
 
+    // Alle Projekte abrufen
     @GetMapping
     public List<Project> getAllProjects() {
-        List<Project> projectList = projectService.findProjectById(null);
-        return projectList;
+        return projectService.findProjectById(null);
     }
 
+    // Ein einzelnes Projekt nach ID abrufen
     @GetMapping(path = "/byId/{id}")
     public List<Project> getProjectById(@PathVariable("id") final Long id) {
-        List<Project> projectList = projectService.findProjectById(id);
-        return projectList;
+        return projectService.findProjectById(id);
     }
 
+    // Alle Projekte eines bestimmten Benutzers abrufen
+    @GetMapping(path = "/byUser/{userId}")
+    public List<Project> getProjectsByUserId(@PathVariable("userId") Long userId) {
+        return projectService.findProjectsByUserId(userId);
+    }
+
+    // Alle Projekte außer eigene Projekte abrufen
+    @GetMapping(path = "/others/{userId}")
+    public List<Project> getProjectsFromOtherUsers(@PathVariable("userId") Long userId) {
+        return projectService.findProjectsFromOtherUsers(userId);
+    }
+
+    // Neues Projekt erstellen
+    @PostMapping("/create")
+    public Project createProject(@RequestBody Project project) {
+        return projectService.createProject(project);
+    }
 }
