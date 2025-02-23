@@ -19,6 +19,7 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
+    // Benutzer nach ID abrufen
     public List<User> findUserById(Long idFilter) {
         List<User> userList = new ArrayList<>();
         if (idFilter == null) {
@@ -27,5 +28,10 @@ public class UserService {
             userRepository.findById(idFilter).ifPresent(userList::add);
         }
         return userList;
+    }
+
+    // Neuen Benutzer speichern
+    public User createUser(User user) {
+        return userRepository.save(user);
     }
 }

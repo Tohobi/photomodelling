@@ -14,13 +14,21 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    // Alle Benutzer abrufen
     @GetMapping
     public List<User> getAllUsers() {
         return userService.findUserById(null);
     }
 
+    // Einzelnen Benutzer nach ID abrufen
     @GetMapping(path = "/byId/{id}")
     public List<User> getUserById(@PathVariable("id") final Long id) {
         return userService.findUserById(id);
+    }
+
+    // Neuen Benutzer erstellen
+    @PostMapping("/create")
+    public User createUser(@RequestBody User user) {
+        return userService.createUser(user);
     }
 }
