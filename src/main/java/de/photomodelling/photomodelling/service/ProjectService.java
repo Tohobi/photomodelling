@@ -1,14 +1,17 @@
 package de.photomodelling.photomodelling.service;
 
+import de.photomodelling.photomodelling.model.Note;
+import de.photomodelling.photomodelling.model.Photo;
 import de.photomodelling.photomodelling.model.Project;
 import de.photomodelling.photomodelling.repository.ProjectRepository;
+import de.photomodelling.photomodelling.repository.PhotoRepository;
+import de.photomodelling.photomodelling.repository.NoteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
+import java.util.Optional;
 
 @Service
 public class ProjectService {
@@ -17,8 +20,16 @@ public class ProjectService {
     private final ProjectRepository projectRepository;
 
     @Autowired
-    public ProjectService(ProjectRepository projectRepository) {
+    private final PhotoRepository photoRepository;
+
+    @Autowired
+    private final NoteRepository noteRepository;
+
+    @Autowired
+    public ProjectService(ProjectRepository projectRepository, PhotoRepository photoRepository, NoteRepository noteRepository) {
         this.projectRepository = projectRepository;
+        this.photoRepository = photoRepository;
+        this.noteRepository = noteRepository;
     }
 
     // Ein einzelnes Projekt abrufen
@@ -32,22 +43,44 @@ public class ProjectService {
         return projectList;
     }
 
-    // Alle Projekte eines bestimmten Benutzers abrufen
-    public List<Project> findProjectsByUserId(Long userId) {
-        return projectRepository.findByUserId(userId);
-    }
-
-    // Alle Projekte außer eigene Projekte abrufen
-    public List<Project> findProjectsFromOtherUsers(Long userId) {
-        List<Project> allProjects = new ArrayList<>();
-        projectRepository.findAll().forEach(allProjects::add);
-        return allProjects.stream()
-                .filter(project -> !Objects.equals(project.getUser().getId(), userId))
-                .collect(Collectors.toList());
-    }
-
-    // Ein neues Projekt erstellen und speichern
+    // Ein neues Projekt speichern
     public Project createProject(Project project) {
         return projectRepository.save(project);
+    }
+
+    // Einem Projekt mehrere Fotos hinzufügen
+    public Project addPhotosToProject(Long projectId, List<Photo> photos) {
+        Optional<Project> projectOpt = projectRepository.findById(projectId);
+
+        if (projectOpt.isPresent()) {
+            Project project = projectOpt.get();
+
+            for (Photo photo : photos) {
+                photo.setProject(project);
+                photoRepository.save(photo); // Jedes Foto mit dem Projekt verknüpfen und speichern
+            }
+
+            return project;
+        } else {
+            throw new RuntimeException("Projekt mit ID " + projectId + " nicht gefunden!");
+        }
+    }
+
+    // Einem Projekt mehrere Notizen hinzufügen
+    public Project addNotesToProject(Long projectId, List<Note> notes) {
+        Optional<Project> projectOpt = projectRepository.findById(projectId);
+
+        if (projectOpt.isPresent()) {
+            Project project = projectOpt.get();
+
+            for (Note note : notes) {
+                note.setProject(project);
+                noteRepository.save(note); // Jede Notiz mit dem Projekt verknüpfen und speichern
+            }
+
+            return project;
+        } else {
+            throw new RuntimeException("Projekt mit ID " + projectId + " nicht gefunden!");
+        }
     }
 }
