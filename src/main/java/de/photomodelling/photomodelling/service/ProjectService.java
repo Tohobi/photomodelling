@@ -3,9 +3,11 @@ package de.photomodelling.photomodelling.service;
 import de.photomodelling.photomodelling.model.Note;
 import de.photomodelling.photomodelling.model.Photo;
 import de.photomodelling.photomodelling.model.Project;
+import de.photomodelling.photomodelling.model.ThreeD;
 import de.photomodelling.photomodelling.repository.ProjectRepository;
 import de.photomodelling.photomodelling.repository.PhotoRepository;
 import de.photomodelling.photomodelling.repository.NoteRepository;
+import de.photomodelling.photomodelling.repository.ThreeDRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,10 +28,14 @@ public class ProjectService {
     private final NoteRepository noteRepository;
 
     @Autowired
-    public ProjectService(ProjectRepository projectRepository, PhotoRepository photoRepository, NoteRepository noteRepository) {
+    private final ThreeDRepository threeDRepository;
+
+    @Autowired
+    public ProjectService(ProjectRepository projectRepository, PhotoRepository photoRepository, NoteRepository noteRepository, ThreeDRepository threeDRepository) {
         this.projectRepository = projectRepository;
         this.photoRepository = photoRepository;
         this.noteRepository = noteRepository;
+        this.threeDRepository = threeDRepository;
     }
 
     // Ein einzelnes Projekt abrufen
@@ -79,6 +85,30 @@ public class ProjectService {
             }
 
             return project;
+        } else {
+            throw new RuntimeException("Projekt mit ID " + projectId + " nicht gefunden!");
+        }
+    }
+
+    // 3D-Modell für ein Projekt rendern
+    public ThreeD render3DModelForProject(Long projectId) {
+        Optional<Project> projectOpt = projectRepository.findById(projectId);
+
+        if (projectOpt.isPresent()) {
+            Project project = projectOpt.get();
+            List<Photo> photos = photoRepository.findByProjectId(projectId);
+
+            if (photos.isEmpty()) {
+                throw new RuntimeException("Keine Fotos für das Projekt gefunden! Rendering nicht möglich.");
+            }
+
+            // Simuliertes Rendering des 3D-Modells
+            ThreeD threeDModel = new ThreeD();
+            threeDModel.setProject(project);
+            threeDModel.setFilepath("/3dmodels/" + project.getId() + "_model.obj");
+            threeDModel.setFilename(project.getName() + "_model.obj");
+
+            return threeDRepository.save(threeDModel);
         } else {
             throw new RuntimeException("Projekt mit ID " + projectId + " nicht gefunden!");
         }

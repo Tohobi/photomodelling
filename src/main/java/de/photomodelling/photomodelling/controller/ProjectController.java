@@ -3,6 +3,7 @@ package de.photomodelling.photomodelling.controller;
 import de.photomodelling.photomodelling.model.Note;
 import de.photomodelling.photomodelling.model.Photo;
 import de.photomodelling.photomodelling.model.Project;
+import de.photomodelling.photomodelling.model.ThreeD;
 import de.photomodelling.photomodelling.service.ProjectService;
 import de.photomodelling.photomodelling.service.PhotoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,5 +49,11 @@ public class ProjectController {
     @PostMapping("/{projectId}/addNotes")
     public Project addNotesToProject(@PathVariable Long projectId, @RequestBody List<Note> notes) {
         return projectService.addNotesToProject(projectId, notes);
+    }
+
+    // 3D-Modell für ein Projekt rendern
+    @PostMapping("/{projectId}/render3D")
+    public ThreeD render3DModelForProject(@PathVariable Long projectId) {
+        return projectService.render3DModelForProject(projectId);
     }
 }
