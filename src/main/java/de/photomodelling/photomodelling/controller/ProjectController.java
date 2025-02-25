@@ -1,5 +1,6 @@
 package de.photomodelling.photomodelling.controller;
 
+import de.photomodelling.photomodelling.boofcv.ExampleMultiViewSparseReconstruction;
 import de.photomodelling.photomodelling.model.Note;
 import de.photomodelling.photomodelling.model.Photo;
 import de.photomodelling.photomodelling.model.Project;
@@ -36,6 +37,8 @@ public class ProjectController {
     // Neues Projekt erstellen
     @PostMapping("/create")
     public Project createProject(@RequestBody Project project) {
+        ExampleMultiViewSparseReconstruction example = new ExampleMultiViewSparseReconstruction();
+        example.runExample();
         return projectService.createProject(project);
     }
 
