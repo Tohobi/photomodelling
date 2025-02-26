@@ -2,6 +2,8 @@ package de.photomodelling.photomodelling.model;
 
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Entity
 @Table(name = "projects")
 public class Project {
@@ -16,6 +18,9 @@ public class Project {
 
     @ManyToOne
     private User user;
+
+    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
+    private List<Rating> ratings;
 
     public long getId() {
         return id;
@@ -47,5 +52,17 @@ public class Project {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public List<Rating> getRatings() {
+        return ratings;
+    }
+
+    public void setRatings(List<Rating> ratings) {
+        this.ratings = ratings;
     }
 }
