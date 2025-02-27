@@ -1,9 +1,11 @@
 package de.photomodelling.photomodelling.strategy;
 
 import de.photomodelling.photomodelling.model.Rating;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
+@Component
 public class WeightedRatingStrategy implements RatingStrategy {
     @Override
     public double calculateRating(List<Rating> ratings) {
@@ -17,6 +19,6 @@ public class WeightedRatingStrategy implements RatingStrategy {
             weight *= 0.9; // Neuere Bewertungen haben mehr Gewicht
         }
 
-        return total / weightSum;
+        return weightSum == 0 ? 0 : total / weightSum;
     }
 }

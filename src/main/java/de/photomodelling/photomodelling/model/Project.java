@@ -1,5 +1,6 @@
 package de.photomodelling.photomodelling.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -20,13 +21,14 @@ public class Project {
     private User user;
 
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
+    @JsonManagedReference
     private List<Rating> ratings;
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -52,10 +54,6 @@ public class Project {
 
     public void setUser(User user) {
         this.user = user;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public List<Rating> getRatings() {

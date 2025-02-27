@@ -1,5 +1,7 @@
 package de.photomodelling.photomodelling.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 @Entity
@@ -18,6 +20,9 @@ public class Rating {
     private User user;
 
     @ManyToOne
+    //@JsonIgnore
+    @JoinColumn(name = "project_id", nullable = false)
+    @JsonBackReference
     private Project project;
 
     public long getId() {

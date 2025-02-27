@@ -23,4 +23,27 @@ public class RatingController {
     public List<Rating> getRatingById(@PathVariable("id") final Long id) {
         return ratingService.findRatingById(id);
     }
+
+    // Neue POST-Methode zum Erstellen einer Bewertung
+    @PostMapping("/create")
+    public Rating createRating(@RequestBody Rating rating) {
+        return ratingService.saveRating(rating);
+    }
+
+    @GetMapping("/project/{projectId}")
+    public List<Rating> getRatingsByProject(@PathVariable Long projectId) {
+        return ratingService.findRatingsByProjectId(projectId);
+    }
+
+    @GetMapping("/project/{projectId}/average")
+    public double getAverageRating(@PathVariable Long projectId) {
+        return ratingService.getAverageRatingForProject(projectId);
+    }
+
+    @PostMapping("/changeStrategy")
+    public String changeRatingStrategy(@RequestParam String strategy) {
+        ratingService.changeStrategy(strategy);
+        return "Strategy changed to: " + strategy;
+    }
+
 }
