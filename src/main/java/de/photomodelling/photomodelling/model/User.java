@@ -16,6 +16,7 @@ public class User {
 
     private String role;
 
+    //Getter und Setter
     public long getId() {
         return id;
     }
