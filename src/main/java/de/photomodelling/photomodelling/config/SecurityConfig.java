@@ -26,6 +26,8 @@ public class SecurityConfig {
                 .requestMatchers("/project/**", "/photo/**", "/note/**", "/rating/**", "/h2-console/**").permitAll() // Diese Endpunkte müssen authentifiziert sein
                 .anyRequest().authenticated()
                 .and()
+                .headers().frameOptions().disable()
+                .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
         return http.build();
