@@ -73,6 +73,10 @@ public class ProjectService {
         return projectList;
     }
 
+    public List<Project> findProjectsByUserId(Long userId) {
+        return projectRepository.findByUserId(userId);
+    }
+
     // Ein neues Projekt speichern
     public Project createProject(Project project) {
         Project savedProject = projectRepository.save(project);

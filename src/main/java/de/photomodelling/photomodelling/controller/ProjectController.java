@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@CrossOrigin(origins = "http://localhost:4200", allowCredentials = "true")
 @RestController
 @RequestMapping(path = "/project")
 public class ProjectController {
@@ -31,6 +32,12 @@ public class ProjectController {
     @GetMapping(path = "/byId/{id}")
     public List<Project> getProjectById(@PathVariable("id") final Long id) {
         return projectService.findProjectById(id);
+    }
+
+    // Alle Projekte eines bestimmten Benutzers abrufen
+    @GetMapping(path = "/byUser/{userId}")
+    public List<Project> getProjectsByUserId(@PathVariable("userId") Long userId) {
+        return projectService.findProjectsByUserId(userId);
     }
 
     // Neues Projekt erstellen
