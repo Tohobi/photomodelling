@@ -46,6 +46,12 @@ public class ProjectController {
         return projectService.createProject(project);
     }
 
+    // Ein Projekt nach ID löschen
+    @DeleteMapping("/{projectId}")
+    public void deleteProject(@PathVariable Long projectId) {
+        projectService.deleteProjectById(projectId);
+    }
+
     // Einem Projekt mehrere Fotos hinzufügen
     @PostMapping("/{projectId}/addPhotos")
     public Project addPhotosToProject(@PathVariable Long projectId, @RequestBody List<Photo> photos) {

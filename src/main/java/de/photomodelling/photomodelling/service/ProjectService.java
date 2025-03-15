@@ -84,6 +84,11 @@ public class ProjectService {
         return savedProject;
     }
 
+    public void deleteProjectById(Long projectId) {
+        projectRepository.deleteById(projectId);
+    }
+
+
     // Einem Projekt mehrere Fotos hinzufügen
     public Project addPhotosToProject(Long projectId, List<Photo> photos) {
         Optional<Project> projectOpt = projectRepository.findById(projectId);

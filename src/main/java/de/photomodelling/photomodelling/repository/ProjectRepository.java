@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface ProjectRepository extends CrudRepository<Project, Long> {
     List<Project> findByUserId(Long userId);
+    void deleteById(Long id);
 }
