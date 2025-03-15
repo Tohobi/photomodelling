@@ -23,7 +23,7 @@ public class SecurityConfig {
                 .csrf().disable()
                 .authorizeHttpRequests()
                 .requestMatchers("/user/login", "/user/register").permitAll() // Login & Register ohne Auth
-                .requestMatchers("/project/**", "/photo/**", "/note/**", "/rating/**").permitAll() // Diese Endpunkte müssen authentifiziert sein
+                .requestMatchers("/project/**", "/photo/**", "/note/**", "/rating/**", "/h2-console/**").permitAll() // Diese Endpunkte müssen authentifiziert sein
                 .anyRequest().authenticated()
                 .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
