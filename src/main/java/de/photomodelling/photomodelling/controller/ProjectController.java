@@ -7,6 +7,7 @@ import de.photomodelling.photomodelling.model.ThreeD;
 import de.photomodelling.photomodelling.service.ProjectService;
 import de.photomodelling.photomodelling.service.PhotoService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -48,8 +49,9 @@ public class ProjectController {
 
     // Ein Projekt nach ID löschen
     @DeleteMapping("/{projectId}")
-    public void deleteProject(@PathVariable Long projectId) {
+    public ResponseEntity<?> deleteProject(@PathVariable Long projectId) {
         projectService.deleteProjectById(projectId);
+        return ResponseEntity.ok().build();
     }
 
     // Einem Projekt mehrere Fotos hinzufügen

@@ -5,6 +5,7 @@ import de.photomodelling.photomodelling.dto.LoginRequest;
 import de.photomodelling.photomodelling.dto.LoginResponse;
 import de.photomodelling.photomodelling.model.User;
 import de.photomodelling.photomodelling.service.UserService;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -62,4 +63,15 @@ public class UserController {
         }
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials");
     }
+
+    @CrossOrigin(origins = "http://localhost:4200")
+    @GetMapping("/me")
+    public ResponseEntity<?> getCurrentUser(HttpServletRequest request) {
+        String token = request.getHeader("Authorization").replace("Bearer ", "");
+        String username = jwtUtil.extractUsername(token);
+        Optional<User> user = userService.findByUsername(username);
+        return user.map(ResponseEntity::ok)
+                .orElse(ResponseEntity.status(HttpStatus.UNAUTHORIZED).build());
+    }
+
 }
